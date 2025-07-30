@@ -1,0 +1,5 @@
+.cart-items-body{
+    display: grid;
+    grid-template-columns: auto auto;
+
+}

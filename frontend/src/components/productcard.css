@@ -1,0 +1,23 @@
+.productcard-grid {
+
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-flow: row;
+    row-gap: 52px;
+    padding: 52px 0;
+
+  .productcard-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    img{
+      width: 100%;
+    }
+
+    @media screen and (min-width:1024px) {
+      img{
+        width: fit-content;
+      }
+    }
+  }
+}

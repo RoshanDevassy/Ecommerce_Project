@@ -1,0 +1,17 @@
+.product-display-wrapper{
+    display: grid;
+    grid-auto-flow: column;
+
+    .product-update-form{
+        display: grid;
+        grid-auto-flow: column;
+
+        img{
+            width: 80px;
+        }
+
+        input{
+            width: fit-content;
+        }
+    }
+}

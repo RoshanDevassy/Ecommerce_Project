@@ -1,0 +1,30 @@
+.admin-page-section{
+    min-height: 94vh;
+
+    .admin-header{
+        width: fit-content;
+        margin: auto;
+        padding: 12px 0 24px 0;
+
+        .admin-header-heading{
+
+            h2{
+                text-align: center;
+            }
+        }
+
+        .admin-header-options{
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+
+            .admin-header-options-item{
+                text-decoration: none;
+                color: black;
+                padding: 4px 6px;
+                border: 1px solid black;
+                border-radius: 10px;
+            }
+        }
+    }
+}
