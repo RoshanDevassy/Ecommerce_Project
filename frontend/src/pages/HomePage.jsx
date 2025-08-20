@@ -4,15 +4,6 @@ import ImageGallery1 from "../assets/images/image_gallery/product-box1.png";
 import ImageGallery2 from "../assets/images/image_gallery/product-box2.png";
 import ImageGallery3 from "../assets/images/image_gallery/product-box3.png";
 
-import NewArrivals1 from "../assets/images/new_arrivals/product1.jpg";
-import NewArrivals2 from "../assets/images/new_arrivals/product2.jpg";
-import NewArrivals3 from "../assets/images/new_arrivals/product3.jpg";
-import NewArrivals4 from "../assets/images/new_arrivals/product4.jpg";
-import NewArrivals5 from "../assets/images/new_arrivals/product5.jpg";
-import NewArrivals6 from "../assets/images/new_arrivals/product6.jpg";
-import NewArrivals7 from "../assets/images/new_arrivals/product7.jpg";
-import NewArrivals8 from "../assets/images/new_arrivals/product8.jpg";
-
 import OurBlog1 from "../assets/images/our_blog/blog1.jpg";
 import OurBlog2 from "../assets/images/our_blog/blog2.jpg";
 
@@ -24,8 +15,8 @@ import React from "../assets/react.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { ProductContext } from "../ContextAPIs/ProductsContext";
-import { CartContext } from "../contextAPIs/CartContext";
+//import { ProductContext } from "../ContextAPIs/ProductsContext";
+//import { CartContext } from "../contextAPIs/CartContext";
 import GallerySlides from "../components/GallerySlides";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../reduxAPIs/CartSlice";
@@ -35,7 +26,7 @@ export default function HomePage(props) {
   const cartDispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { cartData, setCartData } = useContext(CartContext);
+/*   const { cartData, setCartData } = useContext(CartContext);
 
   console.log("Cart Data in HomePage : ", cartData.products);
 
@@ -49,7 +40,7 @@ export default function HomePage(props) {
           products: [...cartData.products, ...newData],
         })
       : setCartData({ ...cartData, products: newData });
-  };
+  }; */
 
   return (
     <>
