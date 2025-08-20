@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+require('dotenv').config();
 
 const app = express();
-/* const PORT = 5500; */
+const PORT = process.env.PORT; 
 
 
 app.use(cors());
@@ -15,7 +15,7 @@ const SECRET_KEY = process.env.JWT_SECRET || "1234";
 console.info("Secret Key :", SECRET_KEY)
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = "mongodb+srv://roshandevtp:AfYkv3oQliPWQnCv@cluster0.0val66j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -168,15 +168,15 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    //await client.close();
 
   }
 }
 run().catch(console.dir);
 
-/* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
+app.listen(PORT, () => console.info(`Connected Port : ${PORT}`));
 
-module.exports = app;
+
 
 
 
