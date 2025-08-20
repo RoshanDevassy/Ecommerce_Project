@@ -3,6 +3,8 @@ import axios from "axios"
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+const api_url = import.meta.env.VITE_API_URI
+
 export const signup = createAsyncThunk('auth/signup', async (obj) => {
     try {
         /* const response = await fetch("http://localhost:5500/signup/user", {
@@ -12,7 +14,7 @@ export const signup = createAsyncThunk('auth/signup', async (obj) => {
             },
             body: JSON.stringify(obj)
         }) */
-        const response = await axios.post('http://localhost:5500/signup/user', obj)
+        const response = await axios.post(`${api_url}/signup/user`, obj)
 
 
     } catch (error) {
@@ -31,7 +33,7 @@ export const login = createAsyncThunk("auth/login", async (obj) => {
             body: JSON.stringify(obj)
         }) */
 
-        const response = await axios.post('http://localhost:5500/login/user', obj)
+        const response = await axios.post(`${api_url}/login/user`, obj)
         const data = response.data;
         console.info("Login Response Data :", response.data)
         return data

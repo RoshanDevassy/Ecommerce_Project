@@ -2,9 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import { toast } from "react-toastify";
 
+const api_url = import.meta.env.VITE_URI;
+
 export const fetchProducts = createAsyncThunk('api/fetchproducts', async () => {
     try {
-        const response = await fetch('http://localhost:5500/getproducts', {
+        const response = await fetch(`${api_url}/getproducts`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
         })
@@ -21,7 +23,7 @@ export const fetchProducts = createAsyncThunk('api/fetchproducts', async () => {
 
 export const addProduct = createAsyncThunk('api/addproduct', async (obj) => {
     try {
-        const response = await axios.post("http://localhost:5500/admin/addproduct", obj);
+        const response = await axios.post(`${api_url}/admin/addproduct`, obj);
 
         return obj
 
@@ -32,7 +34,7 @@ export const addProduct = createAsyncThunk('api/addproduct', async (obj) => {
 
 export const deleteProduct = createAsyncThunk('api/deleproduct', async (id) => {
     try {
-        const response = await fetch(`http://localhost:5500/admin/deleteproduct/${id}`, {
+        const response = await fetch(`${api_url}/admin/deleteproduct/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -50,7 +52,7 @@ export const updateproduct = createAsyncThunk('api/updateproduct', async ({ plai
     console.info("obj from redux :", plainFormData)
 
     try {
-        const response = await fetch(`http://localhost:5500/admin/updateproduct/${id}`, {
+        const response = await fetch(`${api_url}/admin/updateproduct/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

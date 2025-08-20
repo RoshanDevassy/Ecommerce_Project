@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+const api_url = import.meta.env.VITE_URI;
+
 export const addCartItem = createAsyncThunk('api/addcartitem', async (obj) => {
     try {
-        const response = await fetch('http://localhost:5500/addtocart', {
+        const response = await fetch(`${api_url}/addtocart`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -20,7 +22,7 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async (obj) => {
 })
 
 export const getCartItem = createAsyncThunk("api/getcartitem", async () => {
-    const response = await fetch('http://localhost:5500/getcartitems', {
+    const response = await fetch(`${api_url}/getcartitems`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -34,7 +36,7 @@ export const getCartItem = createAsyncThunk("api/getcartitem", async () => {
 export const deleteCartItem = createAsyncThunk('api/deletecartitem', async (id) => {
 
     console.info("redux delete id :",id)
-    const response = await fetch(`http://localhost:5500/deletecartitem/${id}`, {
+    const response = await fetch(`${api_url}/deletecartitem/${id}`, {
         method: "DELETE"
     })
 
