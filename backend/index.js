@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const app = express();
-const PORT = 5500;
+/* const PORT = 5500; */
 
 
 app.use(cors());
@@ -173,7 +173,9 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.listen(PORT, () => console.info(`Connected Port : ${PORT}`));
+/* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
+
+export default app;
 
 
 
