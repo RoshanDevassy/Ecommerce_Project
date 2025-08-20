@@ -35,7 +35,7 @@ export default function HomePage(props) {
   const cartDispatch = useDispatch();
 
   const navigate = useNavigate();
-  /* const { cartData, setCartData } = useContext(CartContext);
+  const { cartData, setCartData } = useContext(CartContext);
 
   console.log("Cart Data in HomePage : ", cartData.products);
 
@@ -49,7 +49,7 @@ export default function HomePage(props) {
           products: [...cartData.products, ...newData],
         })
       : setCartData({ ...cartData, products: newData });
-  }; */
+  };
 
   return (
     <>
