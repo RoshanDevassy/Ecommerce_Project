@@ -1,33 +1,35 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchProducts, updateproduct } from "../../reduxAPIs/ProductsSlice";
 
 export default function ProductEditPageAdmin() {
+  const { id } = useParams();
+  const router = useNavigate();
+  console.info("id :", id);
 
-    const {id} = useParams();
-    const router = useNavigate();
-    console.info("id :",id)
+  const { products, loading, error } = useSelector(
+    (state) => state.ecomProducts
+  );
+  const dispatch = useDispatch();
 
-    const {products,loading,error} = useSelector(state => state.ecomProducts)
-    const dispatch = useDispatch();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-    useEffect(()=>{
-        window.scrollTo(0,0)
-    },[])
+  const find_product = products.filter((obj) => obj._id == id);
 
-    const find_product = products.filter(obj => obj._id == id )
-
-    /* const id = new Promise((resolve)=>{
+  /* const id = new Promise((resolve)=>{
         resolve(find_product[0]._id)
     }).then(res => res)  */
 
-    const handleFormSubmit = async (e)=>{
-        e.preventDefault();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(e.target);
-        const plainFormData = Object.fromEntries(formData.entries());
-        console.info("new form data :",plainFormData)
+    const formData = new FormData(e.target);
+    const plainFormData = Object.fromEntries(formData.entries());
+    console.info("new form data :", plainFormData);
+
     // const response =  fetch(`http://localhost:5500/admin/updateproduct/${id}`, {
     //         method: "PUT",
     //         headers: {
@@ -35,23 +37,38 @@ export default function ProductEditPageAdmin() {
     //         },
     //         body: JSON.stringify(plainFormData)
     //     })
-        await dispatch(updateproduct({plainFormData,id})).unwrap();
+    
+    await dispatch(updateproduct({ plainFormData, id })).unwrap();
 
-        await dispatch(fetchProducts()).unwrap()
+    await dispatch(fetchProducts()).unwrap();
 
-        router(-1)
-    }
+    router(-1);
+  };
 
   return (
     <>
-        {find_product.map(obj => <form onSubmit={handleFormSubmit} key={obj._id}>
-            <p>Product Title : <input type="text" name="title" defaultValue={obj.title} /> </p>
-            <p>Product Price : <input type="number" name="price" defaultValue={obj.price} /> </p>
-            <p>Product Stock : <input type="number" name="stock" defaultValue={obj.stock} /> </p>
-            <p>Product imgSrc : <input type="text" name="imgSrc" defaultValue={obj.imgSrc} /> </p>
+      {find_product.map((obj) => (
+        <form onSubmit={handleFormSubmit} key={obj._id}>
+          <p>
+            Product Title :{" "}
+            <input type="text" name="title" defaultValue={obj.title} />{" "}
+          </p>
+          <p>
+            Product Price :{" "}
+            <input type="number" name="price" defaultValue={obj.price} />{" "}
+          </p>
+          <p>
+            Product Stock :{" "}
+            <input type="number" name="stock" defaultValue={obj.stock} />{" "}
+          </p>
+          <p>
+            Product imgSrc :{" "}
+            <input type="text" name="imgSrc" defaultValue={obj.imgSrc} />{" "}
+          </p>
 
-            <button type="submit">Submit</button>
-        </form>)}
+          <button type="submit">Submit</button>
+        </form>
+      ))}
     </>
-  )
+  );
 }
