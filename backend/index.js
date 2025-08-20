@@ -31,6 +31,10 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    app.get('/', (req, res) => {
+      res.send("Connected")
+    })
+
     /* User API */
 
     const user_collection = client.db("ecommercedb").collection("users");
