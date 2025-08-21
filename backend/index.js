@@ -174,7 +174,7 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
 
   const data = req.body;
   const userID = req.user.id
-  const response = await cart_collection.insertOne({ data, userID: new ObjectId(userID) });
+  const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userID), _id: new ObjectId(req.body._id) });
   res.send(response);
 })
 
