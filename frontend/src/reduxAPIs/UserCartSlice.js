@@ -16,6 +16,8 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, tok
 
         if (response.ok) {
             alert("Product Added to Cart")
+            return await response.json();
+
         }
     } catch (error) {
         console.warn("Add cart item error : ", error)
@@ -65,6 +67,7 @@ const cartSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addCartItem.fulfilled, (state, action) => {
+                state.cartProducts = [state.cartProducts, action.payload]
             })
 
             .addCase(getCartItem.pending, (state, action) => {
