@@ -1,10 +1,13 @@
 import { useState } from "react";
 import "./adminaddproducts.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../reduxAPIs/ProductsSlice";
 
 export default function AdminAddProducts() {
   const [isSubmitClicked, setIsSubmitClicked] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleAdminFormSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +29,9 @@ export default function AdminAddProducts() {
         throw new Error("Enter All Details");
       }
 
-      const response = await fetch("http://localhost:5500/admin/addproduct", {
+
+      await dispatch(addProduct(jsonFormData)).unwrap();
+      /* const response = await fetch("http://localhost:5500/admin/addproduct", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,11 +43,11 @@ export default function AdminAddProducts() {
         alert("Error during POST");
         throw new Error("Error during product POST method");
       }
-      alert("Product Added Successfully")
+      alert("Product Added Successfully"); */
       e.target.reset();
       setIsSubmitClicked(false);
 
-      navigate('/admin/getproducts')
+      navigate("/admin/getproducts");
     } catch (err) {
       console.warn(err.message);
     }
@@ -58,15 +63,30 @@ export default function AdminAddProducts() {
         >
           <div className="admin-addproduct-item">
             <label htmlFor="product-title">Product Title :</label>
-            <input type="text" id="product-title" name="title" placeholder="bag" />
+            <input
+              type="text"
+              id="product-title"
+              name="title"
+              placeholder="bag"
+            />
           </div>
           <div className="admin-addproduct-item">
             <label htmlFor="product-price">Price :</label>
-            <input type="number" id="product-price" name="price" placeholder="120" />
+            <input
+              type="number"
+              id="product-price"
+              name="price"
+              placeholder="120"
+            />
           </div>
           <div className="admin-addproduct-item">
             <label htmlFor="product-stock">Stock :</label>
-            <input type="number" id="product-stock" name="stock" placeholder="32" />
+            <input
+              type="number"
+              id="product-stock"
+              name="stock"
+              placeholder="32"
+            />
           </div>
           <div className="admin-addproduct-item">
             <label htmlFor="product-image">Image Source :</label>

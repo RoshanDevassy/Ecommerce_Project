@@ -11,7 +11,7 @@ export default function AdminProductsDisplay() {
   );
   const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState({
+/*   const [formData, setFormData] = useState({
     title: "",
     price: "",
     stock: "",
@@ -25,17 +25,17 @@ export default function AdminProductsDisplay() {
     };
 
     setFormData(newForm);
-  };
+  }; */
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
 
-  const [isIdClicked, setIsIdClicked] = useState(null);
+/*   const [isIdClicked, setIsIdClicked] = useState(null); */
 
-  const handleProductEdit = (id) => {
-    /* setIsIdClicked(id); */
-  };
+  /*   const handleProductEdit = (id) => {
+     setIsIdClicked(id); 
+  }; */
 
   return (
     <>
@@ -74,8 +74,8 @@ export default function AdminProductsDisplay() {
                         color: "black",
                       }}
                       name="title"
-                      onChange={handleOnChange}
-                      disabled={isIdClicked == obj._id ? false : true}
+                      /* onChange={handleOnChange}
+                      disabled={isIdClicked == obj._id ? false : true} */
                     />
                   </td>
                   <td>
@@ -83,7 +83,7 @@ export default function AdminProductsDisplay() {
                       type="number"
                       defaultValue={obj.price}
                       name="price"
-                      disabled={isIdClicked == obj._id ? false : true}
+                      /* disabled={isIdClicked == obj._id ? false : true} */
                       style={{
                         width: "100%",
                         backgroundColor: "white",
@@ -97,7 +97,7 @@ export default function AdminProductsDisplay() {
                       type="number"
                       defaultValue={obj.stock}
                       name="stock"
-                      disabled={isIdClicked == obj._id ? false : true}
+                      /* disabled={isIdClicked == obj._id ? false : true} */
                       style={{
                         width: "100%",
                         backgroundColor: "white",
@@ -111,7 +111,7 @@ export default function AdminProductsDisplay() {
                       type="text"
                       defaultValue={obj.imgSrc}
                       name="imgSrc"
-                      disabled={isIdClicked == obj._id ? false : true}
+                      /* disabled={isIdClicked == obj._id ? false : true} */
                       style={{
                         width: "100%",
                         backgroundColor: "white",
@@ -123,7 +123,7 @@ export default function AdminProductsDisplay() {
                   <td>
                     <Link
                       to={`/admin/updateproduct/${obj._id}`}
-                      onClick={() => handleProductEdit(obj._id)}
+                      /* onClick={() => handleProductEdit(obj._id)} */
                       style={{
                         textDecoration: "none",
                         backgroundColor: "grey",

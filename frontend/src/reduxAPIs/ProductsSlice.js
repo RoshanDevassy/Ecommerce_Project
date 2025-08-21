@@ -48,8 +48,6 @@ export const deleteProduct = createAsyncThunk('api/deleproduct', async (id) => {
 })
 
 export const updateproduct = createAsyncThunk('api/updateproduct', async ({ plainFormData, id }, thunkAPI) => {
-    console.log("id from redux", id)
-    console.info("obj from redux :", plainFormData)
 
     try {
         const response = await fetch(`${api_url}/admin/updateproduct/${id}`, {
@@ -94,9 +92,12 @@ const productSlice = createSlice({
             })
 
             .addCase(addProduct.fulfilled, (state, action) => {
-                console.info("Product Added :", action.payload)
                 toast.success("Product Added Successfully")
                 state.products = [...state.products, action.payload]
+            })
+            .addCase(addProduct.rejected, (state, action) => {
+                toast.error("Product Not Added Successfully")
+
             })
 
             .addCase(deleteProduct.fulfilled, (state, action) => {

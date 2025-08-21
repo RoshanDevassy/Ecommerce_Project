@@ -29,8 +29,6 @@ const SingleCrud = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [data, setData] = useState({});
 
-  console.info("Data :",data)
-
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
@@ -110,7 +108,6 @@ const SingleCrud = () => {
   };
 
   const UpdateModel = () => {
-    console.info("Update Model data :", data);
     return (
       <Modal isOpen={updateModal} toggle={updateProductToogle}>
         <ModalHeader>Update Product</ModalHeader>

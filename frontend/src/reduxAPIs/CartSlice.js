@@ -5,7 +5,7 @@ const CartSlices = createSlice({
     initialState: { productData: [] },
     reducers: {
         addProduct: (state, action) => {
-            console.log("Added Product to Cart :", action.payload)
+
             return { ...state, productData: [...state.productData, action.payload] }
         },
         removeProduct: (state, action) => {

@@ -18,7 +18,6 @@ export const signup = createAsyncThunk('auth/signup', async (obj) => {
 
 
     } catch (error) {
-        console.warn("Signup Response Error : ", error.response.data.message)
         throw new Error(error.response.data.message)
     }
 })
@@ -35,7 +34,6 @@ export const login = createAsyncThunk("auth/login", async (obj) => {
 
         const response = await axios.post(`${api_url}/login/user`, obj)
         const data = response.data;
-        console.info("Login Response Data :", response.data)
         return data
 
     } catch (error) {
@@ -79,7 +77,6 @@ const authSlice = createSlice({
                 localStorage.setItem("clientname", action.payload.user.name);
                 localStorage.setItem("clientToken", action.payload.token);
                 localStorage.setItem("clientRole", action.payload.user.role);
-                console.info("Payload :", action.payload);
                 alert("Logged in");
             })
     }
