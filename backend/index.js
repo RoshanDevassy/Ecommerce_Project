@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const CartMiddleware = require("./middlewares/CartMiddleware");
 
 const app = express();
 /* const PORT = 5500; */
@@ -19,6 +19,7 @@ const SECRET_KEY = process.env.JWT_SECRET || "1234";
 console.info("Secret Key :", SECRET_KEY)
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
 const uri = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -167,25 +168,26 @@ app.delete('/admin/deleteproduct/:id', async (req, res) => {
 //Cart API
 
 
-app.post('/addtocart', async (req, res) => {
+app.post('/addtocart', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const data = req.body;
-  const response = await cart_collection.insertOne(data);
+  const userID = req.user.id
+  const response = await cart_collection.insertOne({ data, userID: new ObjectId(userID) });
   res.send(response);
 })
 
-app.get('/getcartitems', async (req, res) => {
+app.get('/getcartitems', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
-  const response = cart_collection.find();
+  const response = cart_collection.find({ userID: new ObjectId(req.user.id) });
   const response_toarray = await response.toArray();
   res.send(response_toarray);
 })
 
-app.delete('/deletecartitem/:id', async (req, res) => {
+app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
@@ -199,7 +201,7 @@ app.delete('/deletecartitem/:id', async (req, res) => {
   const finditem = await cart_collection.findOne({ _id: id })
   console.info("product exsist ? :", finditem)
 
-  const response = await cart_collection.deleteOne({ _id: id });
+  const response = await cart_collection.deleteOne({ _id: id, userID: new ObjectId(req.user.id) });
   console.info("response :", response)
   if (response.deletedCount === 0) {
     return res.status(404).json({ message: "No cart item found to delete" });
