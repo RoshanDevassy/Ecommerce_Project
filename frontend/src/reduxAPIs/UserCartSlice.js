@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const api_url = import.meta.env.VITE_API_URI;
 
 export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, token }) => {
+    console.info("Add to cart obj :",obj)
     try {
         const response = await fetch(`${api_url}/addtocart`, {
             method: "POST",
