@@ -82,7 +82,7 @@ const cartSlice = createSlice({
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
                 console.info("delete fulfilled payload :", action.payload.userID)
-                state.cartProducts = state.cartProducts.filter(obj => obj.userID != action.payload.userID)
+                state.cartProducts = state.cartProducts.filter(obj => obj.userID != action.payload.userID && obj._id != action.payload._id)
                 console.info(state.cartProducts)
                 alert("Product Deleted Successfully");
             })
