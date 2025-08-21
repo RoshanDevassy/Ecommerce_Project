@@ -15,7 +15,7 @@ import React from "../assets/react.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-//import { ProductContext } from "../ContextAPIs/ProductsContext";
+import { ProductContext } from "../contextAPIs/ProductsContext";
 //import { CartContext } from "../contextAPIs/CartContext";
 import GallerySlides from "../components/GallerySlides";
 import { useDispatch } from "react-redux";
@@ -23,10 +23,11 @@ import { addProduct } from "../reduxAPIs/CartSlice";
 
 export default function HomePage(props) {
   const { ProductsData } = useContext(ProductContext);
+
   const cartDispatch = useDispatch();
 
   const navigate = useNavigate();
-/*   const { cartData, setCartData } = useContext(CartContext);
+  /*   const { cartData, setCartData } = useContext(CartContext);
 
   console.log("Cart Data in HomePage : ", cartData.products);
 
@@ -118,8 +119,8 @@ export default function HomePage(props) {
                       to={`/productsdetail/${obj.id}`}
                       target="_blank"
                       onClick={(e) => {
-                        e.preventDefault()
-                        navigate(`/productsdetail/${obj.id}`)
+                        e.preventDefault();
+                        navigate(`/productsdetail/${obj.id}`);
                       }}
                     >
                       <button className="details-btn">Details</button>
@@ -151,7 +152,7 @@ export default function HomePage(props) {
                       <p>Size : {obj.size}</p>
                     </div>
                     <div className="product-review-btns">
-                      <button >Buy</button>
+                      <button>Buy</button>
                       <Link to={`/productsdetail/${obj.id}`}>
                         <button>Details</button>
                       </Link>
