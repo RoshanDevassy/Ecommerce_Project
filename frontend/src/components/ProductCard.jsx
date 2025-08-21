@@ -10,11 +10,12 @@ export default function ProductCard() {
   );
   const { cartProducts } = useSelector((state) => state.userCartItems);
 
+  const {token} = useSelector(state => state.auth)
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
-    dispatch(getCartItem());
+    dispatch(getCartItem(token));
   }, []);
 
   const handleAddToCart = (obj) => {
@@ -22,7 +23,7 @@ export default function ProductCard() {
     if (pfind) {
       return alert("Product already in Cart");
     } else {
-      dispatch(addCartItem(obj));
+      dispatch(addCartItem({obj,token}));
     }
   };
   return (

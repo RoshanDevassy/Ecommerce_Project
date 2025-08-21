@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { deleteCartItem, getCartItem } from "../reduxAPIs/UserCartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../reduxAPIs/ProductsSlice";
 import "./cartproductcard.css"
 
 export default function CartProductsCard(props) {
   const [counter, setCounter] = useState(1);
+
+  const {token} = useSelector(state => state.auth)
 
   const dispatch = useDispatch();
 
@@ -19,7 +21,7 @@ export default function CartProductsCard(props) {
   }, [counter]);
 
   const handleCartDeleteItem = (id) => {
-      dispatch(deleteCartItem(id));                  
+      dispatch(deleteCartItem({id,token}));                  
   };
 
   return (

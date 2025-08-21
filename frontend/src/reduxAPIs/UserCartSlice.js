@@ -2,12 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const api_url = import.meta.env.VITE_API_URI;
 
-export const addCartItem = createAsyncThunk('api/addcartitem', async (obj) => {
+export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, token }) => {
     try {
         const response = await fetch(`${api_url}/addtocart`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(obj)
         })
@@ -21,30 +22,35 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async (obj) => {
 
 })
 
-export const getCartItem = createAsyncThunk("api/getcartitem", async () => {
+export const getCartItem = createAsyncThunk("api/getcartitem", async (token) => {
     const response = await fetch(`${api_url}/getcartitems`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+
+        },
     })
 
     return await response.json();
 })
 
 
-export const deleteCartItem = createAsyncThunk('api/deletecartitem', async (id) => {
+export const deleteCartItem = createAsyncThunk('api/deletecartitem', async ({ id, token }) => {
 
-    console.info("redux delete id :",id)
+    console.info("redux delete id :", id)
     const response = await fetch(`${api_url}/deletecartitem/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     })
 
     if (response.ok) {
         return id;
     }
 
-    console.warn("Error",response)
+    console.warn("Error", response)
 })
 
 const cartSlice = createSlice({
@@ -64,17 +70,17 @@ const cartSlice = createSlice({
                 state.loading = true;
                 state.status = 'pending';
             })
-            .addCase(getCartItem.fulfilled, (state, action) => {                
+            .addCase(getCartItem.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.loading = false;
                 state.cartProducts = action.payload
             })
-            .addCase(getCartItem.rejected, (state, action) => {        
+            .addCase(getCartItem.rejected, (state, action) => {
                 state.status = 'rejected';
             })
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                console.info("delete fulfilled payload :",action.payload)
+                console.info("delete fulfilled payload :", action.payload)
                 state.cartProducts = state.cartProducts.filter(obj => obj._id != action.payload)
                 console.info(state.cartProducts)
                 alert("Product Deleted Successfully");
