@@ -15,4 +15,4 @@ function cartMiddleware(req, res, next) {
     }
 }
 
-module.exports = cartMiddleware();
+module.exports = cartMiddleware;
