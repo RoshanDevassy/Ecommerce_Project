@@ -15,7 +15,7 @@ const SECRET_KEY = process.env.JWT_SECRET || "1234";
 console.info("Secret Key :", SECRET_KEY)
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = "mongodb+srv://roshandevtp:AfYkv3oQliPWQnCv@cluster0.0val66j.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGO_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -43,7 +43,6 @@ app.get('/', (req, res) => {
 
 
 app.post('/signup/user', async (req, res) => {
-  await connectDB()
   const user_collection = client.db("ecommercedb").collection("users");
 
   const { username, password } = req.body;
@@ -63,7 +62,7 @@ app.post('/signup/user', async (req, res) => {
 })
 
 app.post('/signup/admin', async (req, res) => {
-  await connectDB()
+
   const user_collection = client.db("ecommercedb").collection("users");
 
   const { username, password } = req.body;
@@ -85,7 +84,7 @@ app.post('/signup/admin', async (req, res) => {
 app.post('/login/user', async (req, res) => {
 
   try {
-    await connectDB()
+
     const user_collection = client.db("ecommercedb").collection("users");
 
     const { username, password } = req.body;
@@ -108,6 +107,7 @@ app.post('/login/user', async (req, res) => {
 
     res.json({ token, user: { id: findUser._id, name: findUser.username, role: findUser.role } })
   } catch (error) {
+    res.status(401).json({ error })
     console.warn("Error :", error)
   }
 })
@@ -117,7 +117,7 @@ app.post('/login/user', async (req, res) => {
 
 app.post('/admin/addproduct', async (req, res) => {
 
-  await connectDB();
+
   const products_collection = client.db("ecommercedb").collection("products");
 
   const data = req.body;
@@ -127,7 +127,7 @@ app.post('/admin/addproduct', async (req, res) => {
 
 app.get('/getproducts', async (req, res) => {
 
-  await connectDB();
+
   const products_collection = client.db("ecommercedb").collection("products");
 
   const response = products_collection.find();
@@ -136,7 +136,7 @@ app.get('/getproducts', async (req, res) => {
 })
 
 app.put('/admin/updateproduct/:id', async (req, res) => {
-  await connectDB();
+
   const products_collection = client.db("ecommercedb").collection("products");
 
   const id = req.params.id;
@@ -150,7 +150,7 @@ app.put('/admin/updateproduct/:id', async (req, res) => {
 })
 
 app.delete('/admin/deleteproduct/:id', async (req, res) => {
-  await connectDB();
+
   const products_collection = client.db("ecommercedb").collection("products");
 
   const id = req.params.id;
@@ -163,7 +163,7 @@ app.delete('/admin/deleteproduct/:id', async (req, res) => {
 
 
 app.post('/addtocart', async (req, res) => {
-  await connectDB();
+
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const data = req.body;
@@ -172,7 +172,7 @@ app.post('/addtocart', async (req, res) => {
 })
 
 app.get('/getcartitems', async (req, res) => {
-  await connectDB();
+
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const response = cart_collection.find();
@@ -181,7 +181,7 @@ app.get('/getcartitems', async (req, res) => {
 })
 
 app.delete('/deletecartitem/:id', async (req, res) => {
-  await connectDB();
+
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const id = req.params.id;
