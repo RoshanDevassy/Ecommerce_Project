@@ -47,7 +47,7 @@ export const deleteCartItem = createAsyncThunk('api/deletecartitem', async ({ id
     })
 
     if (response.ok) {
-        return id;
+        return await response.json()
     }
 
     console.warn("Error", response)
@@ -80,8 +80,8 @@ const cartSlice = createSlice({
             })
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                console.info("delete fulfilled payload :", action.payload)
-                state.cartProducts = state.cartProducts.filter(obj => obj._id != action.payload)
+                console.info("delete fulfilled payload :", action.payload.userID)
+                state.cartProducts = state.cartProducts.filter(obj => obj.userID != action.payload.userID)
                 console.info(state.cartProducts)
                 alert("Product Deleted Successfully");
             })

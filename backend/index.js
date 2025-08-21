@@ -198,11 +198,12 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
     return res.status(400).json({ message: "Invalid ObjectId format" });
   }
 
-  const finditem = await cart_collection.findOne({ _id: id })
+  const finditem = await cart_collection.findOne({ _id: id, userID: new ObjectId(req.user.id) })
   console.info("product exsist ? :", finditem)
 
-  const response = await cart_collection.deleteOne({ _id: id, userID: new ObjectId(req.user.id) });
+  const response = await cart_collection.deleteOne(finditem);
   console.info("response :", response)
+  res.status(200).json({ userID: finditem.userID })
   if (response.deletedCount === 0) {
     return res.status(404).json({ message: "No cart item found to delete" });
   }
