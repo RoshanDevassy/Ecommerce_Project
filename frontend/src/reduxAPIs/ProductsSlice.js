@@ -25,7 +25,7 @@ export const addProduct = createAsyncThunk('api/addproduct', async (obj) => {
     try {
         const response = await axios.post(`${api_url}/admin/addproduct`, obj);
 
-        return obj
+        return response.data
 
     } catch (error) {
         throw new Error(error)

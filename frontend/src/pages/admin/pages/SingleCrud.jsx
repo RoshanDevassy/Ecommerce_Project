@@ -29,6 +29,8 @@ const SingleCrud = () => {
   const [updateModal, setUpdateModal] = useState(false);
   const [data, setData] = useState({});
 
+  console.info("Data :",data)
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
