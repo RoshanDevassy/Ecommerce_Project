@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const api_url = import.meta.env.VITE_URI;
+const api_url = import.meta.env.VITE_API_URI;
 
 export const addCartItem = createAsyncThunk('api/addcartitem', async (obj) => {
     try {

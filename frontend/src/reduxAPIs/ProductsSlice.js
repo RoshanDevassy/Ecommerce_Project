@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import { toast } from "react-toastify";
 
-const api_url = import.meta.env.VITE_URI;
+const api_url = import.meta.env.VITE_API_URI;
 
 export const fetchProducts = createAsyncThunk('api/fetchproducts', async () => {
     try {
