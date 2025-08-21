@@ -126,7 +126,7 @@ app.post('/admin/addproduct', async (req, res) => {
 
   const data = req.body;
   const response = await products_collection.insertOne(data);
-  const find = await products_collection.find().sort(-1).limit(1).toArray()
+  const find = await products_collection.find().sort({ _id: -1 }).limit(1).toArray()
   res.status(201).json(find[0])
 });
 
