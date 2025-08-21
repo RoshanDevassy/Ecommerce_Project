@@ -201,15 +201,16 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
   const finditem = await cart_collection.findOne({ _id: new ObjectId(id), userID: new ObjectId(req.user.id) })
   console.info("product exsist ? :", finditem)
 
+  if (!finditem) return res.status(400).json({ error: "No item Found to delete" })
+
   const response = await cart_collection.deleteOne(finditem);
   console.info("response :", response)
-
-  res.status(200).json({ userID: finditem.userID, _id: finditem._id })
 
   if (response.deletedCount === 0) {
     return res.status(404).json({ message: "No cart item found to delete" });
   }
-  res.send(response);
+
+  res.status(200).json({ userID: finditem.userID, _id: finditem._id })
 })
 
 

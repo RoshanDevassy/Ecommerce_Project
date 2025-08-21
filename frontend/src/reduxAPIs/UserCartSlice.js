@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const api_url = import.meta.env.VITE_API_URI;
 
 export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, token }) => {
-    console.info("Add to cart obj :",obj)
+    console.info("Add to cart obj :", obj)
     try {
         const response = await fetch(`${api_url}/addtocart`, {
             method: "POST",
@@ -81,8 +81,8 @@ const cartSlice = createSlice({
             })
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                console.info("delete fulfilled payload :", action.payload.userID)
-                state.cartProducts = state.cartProducts.filter(obj => obj.userID != action.payload.userID && obj._id != action.payload._id)
+                console.info("delete fulfilled payload :", action.payload)
+                state.cartProducts = state.cartProducts.filter(obj => obj._id != action.payload._id)
                 console.info(state.cartProducts)
                 alert("Product Deleted Successfully");
             })
