@@ -23,9 +23,11 @@ function CartPage() {
 
   const dispatch = useDispatch();
 
+  const {token} = useSelector(state => state.auth)
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getCartItem());
+    dispatch(getCartItem(token));
   }, []);
 
   const { productData } = useSelector((state) => state.cartData);
