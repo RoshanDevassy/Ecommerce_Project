@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
@@ -5,18 +7,17 @@ const jwt = require("jsonwebtoken");
 const CartMiddleware = require("./middlewares/CartMiddleware");
 
 const app = express();
-/* const PORT = 5500; */
+const PORT = process.env.PORT;
 
 
 app.use(cors({
-  origin: process.env.FRONTEND_URI,
+  origin: [process.env.FRONTEND_URI,'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 app.use(express.json());
 
 const SECRET_KEY = process.env.JWT_SECRET || "1234";
-console.info("Secret Key :", SECRET_KEY)
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -32,12 +33,18 @@ const client = new MongoClient(uri, {
 });
 
 async function connectDB() {
-  await client.connect();
-  // Send a ping to confirm a successful connection
-  await client.db("admin").command({ ping: 1 });
-  console.log("You successfully connected to MongoDB!");
+  try {
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("You successfully connected to MongoDB!");
+  } catch (error) {
+    console.error(error)
+    process.exit(1);
+  }
 }
 
+connectDB()
 
 app.get('/', (req, res) => {
   res.send("Connected")
@@ -173,10 +180,15 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const data = req.body;
-  const userID = req.user.id
-  const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userID), _id: new ObjectId(req.body._id) });
+  console.info(`DATA :${JSON.stringify(data)}`)
 
-  const get = cart_collection.findOne({ userID: new ObjectId(userID), _id: new ObjectId(req.body._id) })
+  const userId = req.user.id
+  const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userId) });
+
+  console.info(`Cart POST : ${JSON.stringify(response)}`)
+
+  const get = await cart_collection.findOne({ userID: new ObjectId(userId), _id: data._id })
+
   res.status(201).json(get)
 })
 
@@ -185,6 +197,8 @@ app.get('/getcartitems', CartMiddleware, async (req, res) => {
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const response = cart_collection.find({ userID: new ObjectId(req.user.id) });
+
+  console.info(response)
   const response_toarray = await response.toArray();
   res.send(response_toarray);
 })
@@ -196,14 +210,12 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
   const id = req.params.id;
   console.info("Cart item received id :", id)
 
-  if (!ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid ObjectId format" });
+  const finditem = await cart_collection.findOne({ _id:id, userID: new ObjectId(req.user.id) })
+  console.info("product exists ? :", finditem)
+
+  if (!finditem) {
+    return res.status(400).json({ error: "No item Found to delete" })
   }
-
-  const finditem = await cart_collection.findOne({ _id: new ObjectId(id), userID: new ObjectId(req.user.id) })
-  console.info("product exsist ? :", finditem)
-
-  if (!finditem) return res.status(400).json({ error: "No item Found to delete" })
 
   const response = await cart_collection.deleteOne(finditem);
   console.info("response :", response)
