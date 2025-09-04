@@ -15,6 +15,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
 app.use(express.json());
 
 const SECRET_KEY = process.env.JWT_SECRET || "1234";
@@ -32,7 +33,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function connectDB() {
+/* async function connectDB() {
   try {
     await client.connect();
     // Send a ping to confirm a successful connection
@@ -42,9 +43,7 @@ async function connectDB() {
     console.error(error)
     process.exit(1);
   }
-}
-
-connectDB()
+} */
 
 app.get('/', (req, res) => {
   res.send("Connected")
