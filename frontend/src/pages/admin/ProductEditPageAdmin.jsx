@@ -6,7 +6,6 @@ import { fetchProducts, updateproduct } from "../../reduxAPIs/ProductsSlice";
 export default function ProductEditPageAdmin() {
   const { id } = useParams();
   const router = useNavigate();
-  console.info("id :", id);
 
   const { products, loading, error } = useSelector(
     (state) => state.ecomProducts
@@ -28,7 +27,6 @@ export default function ProductEditPageAdmin() {
 
     const formData = new FormData(e.target);
     const plainFormData = Object.fromEntries(formData.entries());
-    console.info("new form data :", plainFormData);
 
     // const response =  fetch(`http://localhost:5500/admin/updateproduct/${id}`, {
     //         method: "PUT",

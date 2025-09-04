@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 const api_url = import.meta.env.VITE_API_URI;
 
@@ -14,12 +15,12 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, tok
         })
 
         if (response.ok) {
-            alert("Product Added to Cart")
+            toast.success("Product Added to Cart")
             return await response.json();
 
         }
     } catch (error) {
-        console.warn("Add cart item error : ", error)
+        console.warn(`Add cart item error :${error}`)
     }
 
 })
@@ -65,6 +66,7 @@ const cartSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addCartItem.fulfilled, (state, action) => {
+                console.info(`Cart item added : ${action.payload}`)
                 state.cartProducts = [state.cartProducts, action.payload]
             })
 
@@ -82,8 +84,12 @@ const cartSlice = createSlice({
             })
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
+                console.info(action.payload)
                 state.cartProducts = state.cartProducts.filter(obj => obj._id != action.payload._id);
-                alert("Product Deleted Successfully");
+                toast.success("Product Deleted Successfully");
+            })
+            .addCase(deleteCartItem.rejected,(state,action)=>{
+                toast.error(`${action.error.message}`)
             })
     }
 })
