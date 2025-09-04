@@ -242,9 +242,9 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
 
 
 
-app.listen(PORT, () => console.info(`Connected Port : ${PORT}`));
+/* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
 
-/* module.exports = app; */
+module.exports = app;
 
 
 
