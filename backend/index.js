@@ -11,7 +11,7 @@ const PORT = process.env.PORT;
 
 
 app.use(cors({
-  origin: [process.env.FRONTEND_URI,'http://localhost:5173'],
+  origin: [process.env.FRONTEND_URI, 'http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -43,7 +43,9 @@ const client = new MongoClient(uri, {
     console.error(error)
     process.exit(1);
   }
-} */
+}
+
+connectDB() */
 
 app.get('/', (req, res) => {
   res.send("Connected")
@@ -116,6 +118,8 @@ app.post('/login/user', async (req, res) => {
       expiresIn: "1h"
     })
 
+    console.info(`TOKEN : ${token}`)
+
     res.json({ token, user: { id: findUser._id, name: findUser.username, role: findUser.role } })
   } catch (error) {
     res.status(401).json({ error })
@@ -182,9 +186,14 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
   console.info(`DATA :${JSON.stringify(data)}`)
 
   const userId = req.user.id
+
+  const find_item = await cart_collection.findOne({ userID: new ObjectId(userId), _id: data._id })
+
+  if (find_item) return res.status(400).json({ error: "Item already inserted" })
+
   const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userId) });
 
-  if(!response.acknowledged) return res.status(400).json({error:"Cart item not inserted"})
+  if (!response.acknowledged) return res.status(400).json({ error: "Cart item not inserted" })
 
   console.info(`Cart POST : ${JSON.stringify(response)}`)
 
@@ -192,7 +201,7 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
 
   const get = await cart_collection.findOne({ userID: new ObjectId(userId), _id: inserted_Id })
 
-  if(!get) return res.status(404).json({error:"Added item not found"})
+  if (!get) return res.status(404).json({ error: "Added item not found" })
 
   res.status(201).json(get)
 })
@@ -203,7 +212,7 @@ app.get('/getcartitems', CartMiddleware, async (req, res) => {
 
   const response = await cart_collection.find({ userID: new ObjectId(req.user.id) }).toArray();
 
- console.info(`Cart Data of user id ${req.user.id} : ${response}`)
+  console.info(`Cart Data of user id ${req.user.id} : ${JSON.stringify(response)}`)
   res.send(response);
 })
 
@@ -214,7 +223,7 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
   const id = req.params.id;
   console.info("Cart item received id :", id)
 
-  const finditem = await cart_collection.findOne({ _id:id, userID: new ObjectId(req.user.id) })
+  const finditem = await cart_collection.findOne({ _id: id, userID: new ObjectId(req.user.id) })
   console.info("product exists ? :", finditem)
 
   if (!finditem) {
@@ -233,9 +242,9 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
 
 
 
-/* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
+app.listen(PORT, () => console.info(`Connected Port : ${PORT}`));
 
-module.exports = app;
+/* module.exports = app; */
 
 
 
