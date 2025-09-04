@@ -201,11 +201,10 @@ app.get('/getcartitems', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
-  const response = cart_collection.find({ userID: new ObjectId(req.user.id) });
+  const response = await cart_collection.find({ userID: new ObjectId(`${req.user.id}`) }).toArray();
 
-  console.info(response)
-  const response_toarray = await response.toArray();
-  res.send(response_toarray);
+ console.info(`Cart Data of user id ${req.user.id} : ${response}`)
+  res.send(response);
 })
 
 app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
