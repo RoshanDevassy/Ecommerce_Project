@@ -201,7 +201,7 @@ app.get('/getcartitems', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
-  const response = await cart_collection.find({ userID: new ObjectId(`${req.user.id}`) }).toArray();
+  const response = await cart_collection.find({ userID: new ObjectId(req.user.id) }).toArray();
 
  console.info(`Cart Data of user id ${req.user.id} : ${response}`)
   res.send(response);
