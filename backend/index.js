@@ -184,9 +184,15 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
   const userId = req.user.id
   const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userId) });
 
+  if(!response.acknowledged) return res.status(400).json({error:"Cart item not inserted"})
+
   console.info(`Cart POST : ${JSON.stringify(response)}`)
 
-  const get = await cart_collection.findOne({ userID: new ObjectId(userId), _id: data._id })
+  const inserted_Id = response.insertedId
+
+  const get = await cart_collection.findOne({ userID: new ObjectId(userId), _id: inserted_Id })
+
+  if(!get) return res.status(404).json({error:"Added item not found"})
 
   res.status(201).json(get)
 })
