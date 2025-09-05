@@ -7,8 +7,6 @@ function cartMiddleware(req, res, next) {
 
     try {
         const decode = jwt.verify(token, process.env.JWT_SECRET)
-
-        console.info("Decoded",decode)
         req.user = decode;
         next()
     } catch (error) {

@@ -183,7 +183,6 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const { _id, ...dataWithoutId } = req.body;
-  console.info(`DATA :${JSON.stringify(data)}`)
 
   const userId = req.user.id
 
@@ -200,6 +199,7 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
   const inserted_Id = response.insertedId
 
   const get = await cart_collection.findOne({ userID: new ObjectId(userId), _id: inserted_Id })
+  console.info(`Cart item send : ${get}`)
 
   if (!get) return res.status(404).json({ error: "Added item not found" })
 
