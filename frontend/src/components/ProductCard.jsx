@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCartItem, getCartItem } from "../reduxAPIs/UserCartSlice";
 import { fetchProducts } from "../reduxAPIs/ProductsSlice";
 import "./productcard.css";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function ProductCard() {
   const { products, loading, error } = useSelector(
@@ -10,12 +12,30 @@ export default function ProductCard() {
   );
   const { cartProducts } = useSelector((state) => state.userCartItems);
 
-  const {token} = useSelector(state => state.auth)
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProducts());
-    dispatch(getCartItem(token));
+
+    async function getCartItems() {
+      try {
+        await dispatch(getCartItem(token)).unwrap();
+      } catch (error) {
+
+        if (error.message.split(" ")[1] == "TokenExpiredError") {
+          toast.info("Token Expired please Login");
+          localStorage.removeItem("clientname");
+          localStorage.removeItem("clientToken");
+          localStorage.removeItem("clientRole");
+        }
+        
+        navigate("/login");
+      }
+    }
+
+    getCartItems();
   }, []);
 
   const handleAddToCart = (obj) => {
@@ -23,7 +43,7 @@ export default function ProductCard() {
     if (pfind) {
       return alert("Product already in Cart");
     } else {
-      dispatch(addCartItem({obj,token}));
+      dispatch(addCartItem({ obj, token }));
     }
   };
   return (
@@ -42,11 +62,7 @@ export default function ProductCard() {
                 <p>Price : ${obj.price}</p>
                 <p>Stocks : {obj.stock}</p>
                 <button>Buy</button>
-                <button
-                  onClick={() => handleAddToCart(obj)}
-                  id={`addtocartbtn${obj._id}`}
-                  type="button"
-                >
+                <button onClick={() => handleAddToCart(obj)} type="button">
                   Add to Cart
                 </button>
               </div>

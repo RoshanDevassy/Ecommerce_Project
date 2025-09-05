@@ -14,11 +14,13 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, tok
             body: JSON.stringify(obj)
         })
 
-        if (response.ok) {
-            toast.success("Product Added to Cart")
-            return await response.json();
-
+        if (!response.ok) {
+            const err = await response.json();
+            console.error(err)
+            throw new Error(err)
         }
+
+        return await response.json();
     } catch (error) {
         console.warn(`Add cart item error :${error}`)
     }
@@ -26,16 +28,26 @@ export const addCartItem = createAsyncThunk('api/addcartitem', async ({ obj, tok
 })
 
 export const getCartItem = createAsyncThunk("api/getcartitem", async (token) => {
-    const response = await fetch(`${api_url}/getcartitems`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+    try {
+        const response = await fetch(`${api_url}/getcartitems`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
 
-        },
-    })
+            },
+        });
 
-    return await response.json();
+        if (!response.ok) {
+            const err = await response.json()
+            throw new Error(err.error.name)
+        }
+
+        return await response.json();
+
+    } catch (error) {
+        throw new Error(error)
+    }
 })
 
 
@@ -60,14 +72,16 @@ const cartSlice = createSlice({
     initialState: {
         cartProducts: [],
         loading: null,
-        status: null
+        status: null,
+        cartError: null
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(addCartItem.fulfilled, (state, action) => {
-                console.info(`Cart item added : ${action.payload}`)
+                console.info(`Cart item added : ${JSON.stringify(action.payload)}`)
                 state.cartProducts = [state.cartProducts, action.payload]
+                toast.success("Product Added to Cart")
             })
 
             .addCase(getCartItem.pending, (state, action) => {
@@ -81,14 +95,15 @@ const cartSlice = createSlice({
             })
             .addCase(getCartItem.rejected, (state, action) => {
                 state.status = 'rejected';
+                state.loading = false
             })
 
             .addCase(deleteCartItem.fulfilled, (state, action) => {
-                console.info(action.payload)
+                console.info(`Deleted Item : ${JSON.stringify(action.payload)}`)
                 state.cartProducts = state.cartProducts.filter(obj => obj._id != action.payload._id);
                 toast.success("Product Deleted Successfully");
             })
-            .addCase(deleteCartItem.rejected,(state,action)=>{
+            .addCase(deleteCartItem.rejected, (state, action) => {
                 toast.error(`${action.error.message}`)
             })
     }

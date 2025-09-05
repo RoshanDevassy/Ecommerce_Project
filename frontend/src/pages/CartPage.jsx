@@ -23,11 +23,27 @@ function CartPage() {
 
   const dispatch = useDispatch();
 
-  const {token} = useSelector(state => state.auth)
+  const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getCartItem(token));
+
+    async function getCartItems() {
+      try {
+        await dispatch(getCartItem(token)).unwrap();
+      } catch (error) {
+        if (error.message.split(" ")[1] == "TokenExpiredError") {
+          toast.info("Token Expired please Login");
+          localStorage.removeItem("clientname");
+          localStorage.removeItem("clientToken");
+          localStorage.removeItem("clientRole");
+        }
+
+        navigate("/login");
+      }
+    }
+
+    getCartItems();
   }, []);
 
   const { productData } = useSelector((state) => state.cartData);
@@ -96,13 +112,16 @@ function CartPage() {
       </div>
       {/* Using Thunk in Redux */}
       <div className="cart-items-grid">
-        {loading && <p>Loading...</p>}
-        {status == "rejected" && <p>{status}</p>}
-        {cartProducts.length <= 0 ? <p>No Items</p> : ""}
-        {cartProducts &&
-          cartProducts.map((obj) => (
-            <CartProductsCard cartItem={obj} key={obj._id} />
+        {loading || status == "pending" ? <p>Loading...</p> : ""}
+        {cartProducts.length > 0 &&
+          cartProducts.map((obj, ind) => (
+            <CartProductsCard cartItem={obj} key={ind} />
           ))}
+        {status == "fulfilled" && cartProducts.length <= 0 ? (
+          <p>No Items</p>
+        ) : (
+          ""
+        )}
       </div>
     </section>
   );

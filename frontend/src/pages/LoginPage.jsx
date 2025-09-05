@@ -3,9 +3,18 @@ import { useDispatch } from "react-redux";
 import { login } from "../reduxAPIs/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./loginpage.css";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(localStorage.getItem('clientToken')){
+       toast.info("Already Loggedin");
+
+       navigate('/homepage')
+    }
+  },[])
 
   const [formData, setFormData] = useState({
     username: "",
