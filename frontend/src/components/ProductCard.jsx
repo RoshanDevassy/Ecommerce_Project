@@ -19,7 +19,9 @@ export default function ProductCard() {
   useEffect(() => {
     dispatch(fetchProducts());
 
-    async function getCartItems() {
+    dispatch(getCartItem(token));
+
+ /*    async function getCartItems() {
       try {
         await dispatch(getCartItem(token)).unwrap();
       } catch (error) {
@@ -34,7 +36,7 @@ export default function ProductCard() {
       }
     }
 
-    getCartItems();
+    getCartItems(); */
   }, []);
 
   const handleAddToCart = (obj) => {

@@ -29,7 +29,9 @@ function CartPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    async function getCartItems() {
+    dispatch(getCartItem(token));
+
+/*     async function getCartItems() {
       try {
         await dispatch(getCartItem(token)).unwrap();
       } catch (error) {
@@ -44,7 +46,7 @@ function CartPage() {
       }
     }
 
-    getCartItems();
+    getCartItems(); */
   }, []);
 
   const { productData } = useSelector((state) => state.cartData);
