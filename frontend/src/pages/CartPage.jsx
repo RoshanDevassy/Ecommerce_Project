@@ -3,7 +3,7 @@ import { CartContext } from "../contextAPIs/CartContext";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { removeProduct } from "../reduxAPIs/CartSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { deleteCartItem, getCartItem } from "../reduxAPIs/UserCartSlice";
 import CartProductsCard from "../components/CartProductsCard";
 import "./cartpage.css";
@@ -22,6 +22,7 @@ function CartPage() {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { token } = useSelector((state) => state.auth);
 
