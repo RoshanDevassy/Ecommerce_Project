@@ -23,14 +23,13 @@ export default function ProductCard() {
       try {
         await dispatch(getCartItem(token)).unwrap();
       } catch (error) {
-
         if (error.message.split(" ")[1] == "TokenExpiredError") {
           toast.info("Token Expired please Login");
           localStorage.removeItem("clientname");
           localStorage.removeItem("clientToken");
           localStorage.removeItem("clientRole");
         }
-        
+
         navigate("/login");
       }
     }
@@ -51,7 +50,7 @@ export default function ProductCard() {
       {loading && <p>Loading</p>}
       {error && <p>{error.message}</p>}
       <div className="container productcard-grid">
-        {products.length > 0 ? (
+        {products.length > 0 &&
           products.map((obj) => (
             <article key={obj._id} className="productcard-body">
               <div>
@@ -67,10 +66,7 @@ export default function ProductCard() {
                 </button>
               </div>
             </article>
-          ))
-        ) : (
-          <p>No Products</p>
-        )}
+          ))}
       </div>
     </>
   );

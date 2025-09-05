@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function ProtectedRoute({ children, requiredRole }) {
+export default async function ProtectedRoute({ children, requiredRole }) {
   const { role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   if (localStorage.getItem("clientToken")) {
     try {
-      const response = axios.get(`${import.meta.env.VITE_API_URI}/verifytoken`,{
+      const response = await axios.get(`${import.meta.env.VITE_API_URI}/verifytoken`,{
         headers:{
           "Authorization":`Bearer ${localStorage.getItem('clientToken')}`
         }
@@ -18,6 +18,7 @@ export default function ProtectedRoute({ children, requiredRole }) {
       if (response.data.message !== "Token Verified")
         throw new Error("Token Expired");
     } catch (error) {
+      toast.info('Session Expired')
       localStorage.removeItem("clientToken");
     }
   }
