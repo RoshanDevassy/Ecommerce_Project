@@ -182,16 +182,16 @@ app.post('/addtocart', CartMiddleware, async (req, res) => {
 
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
-  const data = req.body;
+  const { _id, ...dataWithoutId } = req.body;
   console.info(`DATA :${JSON.stringify(data)}`)
 
   const userId = req.user.id
 
-  const find_item = await cart_collection.findOne({ userID: new ObjectId(userId), _id: data._id })
+  const find_item = await cart_collection.findOne({ userID: new ObjectId(userId), p_id: new ObjectId(_id) })
 
   if (find_item) return res.status(400).json({ error: "Item already inserted" })
 
-  const response = await cart_collection.insertOne({ ...data, userID: new ObjectId(userId) });
+  const response = await cart_collection.insertOne({ ...dataWithoutId, userID: new ObjectId(userId), p_id: new ObjectId(_id) });
 
   if (!response.acknowledged) return res.status(400).json({ error: "Cart item not inserted" })
 
@@ -221,9 +221,9 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
   const cart_collection = client.db("ecommercedb").collection("cartitems");
 
   const id = req.params.id;
-  console.info("Cart item received id :", id)
+  console.info(`Deleted Cart Item ${id}`)
 
-  const finditem = await cart_collection.findOne({ _id: id, userID: new ObjectId(req.user.id) })
+  const finditem = await cart_collection.findOne({ _id: new ObjectId(id), userID: new ObjectId(req.user.id) })
   console.info("product exists ? :", finditem)
 
   if (!finditem) {
@@ -237,7 +237,7 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
     return res.status(404).json({ message: "No cart item found to delete" });
   }
 
-  res.status(200).json({ userID: finditem.userID, _id: finditem._id })
+  res.status(200).json({ message: "Item Deleted Successfully" })
 })
 
 
