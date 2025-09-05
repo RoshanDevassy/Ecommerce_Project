@@ -21,6 +21,7 @@ app.use(express.json());
 const SECRET_KEY = process.env.JWT_SECRET || "1234";
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const cartMiddleware = require('./middlewares/CartMiddleware');
 
 const uri = process.env.MONGO_URI;
 
@@ -240,6 +241,12 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
   res.status(200).json({ message: "Item Deleted Successfully" })
 })
 
+app.get('/verifytoken', cartMiddleware, async (req, res) => {
+  if(req.user.id){
+    res.send(200).json({message:"Token Verified"})
+  }
+  
+})
 
 
 /* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
