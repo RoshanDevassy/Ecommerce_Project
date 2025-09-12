@@ -100,7 +100,6 @@ export default function LoginPage() {
       } catch (error) {
         setIsLogging(false);
         console.warn("Login Error :", error.message);
-        alert("Error : ", error.message);
       }
     } else {
       setIsLogging(false);
