@@ -102,12 +102,12 @@ app.post('/login/user', async (req, res) => {
 
     const findUser = await user_collection.findOne({ username })
     console.info("Login Find User :", findUser)
-    if (!findUser) return res.status(401).json({ message: "User Not Found" })
+    if (!findUser) return res.status(404).json({ message: "User Not Found" })
 
     console.info("pass :", password, findUser.password)
     const findPass = await bcrypt.compare(password, findUser.password)
     console.info("Find Pass :", findPass)
-    if (!findPass) return res.status(401).json({ message: "Password not Matched" });
+    if (!findPass) return res.status(404).json({ message: "Password not Matched" });
 
     const token = jwt.sign({
       id: findUser._id, role: findUser.role
