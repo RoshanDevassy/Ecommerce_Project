@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../reduxAPIs/AuthSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./loginpage.css";
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(localStorage.getItem('clientToken')){
-       toast.info("Already Loggedin");
+  useEffect(() => {}, []);
 
-       navigate('/homepage')
-    }
-  },[])
+  /*   useEffect(() => {
+    prevPathname.current = location.pathname;
+  }, [location]); */
 
   const [formData, setFormData] = useState({
     username: "",
@@ -112,7 +110,7 @@ export default function LoginPage() {
   return (
     <>
       <form onSubmit={handleFormSubmit} className="login-page-form">
-        <div className="login-page-layout"> 
+        <div className="login-page-layout">
           <h2>Welcome to Login Page</h2>
           <div className="login-item">
             <label htmlFor="username">Username :</label>
@@ -135,11 +133,14 @@ export default function LoginPage() {
             {error.password && <p>{error.password}</p>}
           </div>
           <div>
+            <Link to="/">
+              <button>Go to SignUp</button>
+            </Link>
             <button type="submit" disabled={isLogging}>
-            {" "}
-            {isLogging ? "Logging in" : "Login"}{" "}
-          </button>
-          <Link to="/"><button>Go to SignUp</button></Link>
+              {" "}
+              {isLogging ? "Logging in" : "Login"}{" "}
+            </button>
+            
           </div>
         </div>
       </form>

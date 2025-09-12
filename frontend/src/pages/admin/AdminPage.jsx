@@ -1,14 +1,16 @@
 import { Link, Outlet } from "react-router-dom";
 import "./adminpage.css";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../reduxAPIs/ProductsSlice";
 
 export default function AdminPage() {
   const dispatch = useDispatch();
 
+  const { token } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(token));
   }, []);
 
   return (

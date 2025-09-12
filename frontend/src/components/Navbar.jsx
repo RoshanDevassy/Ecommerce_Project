@@ -35,7 +35,7 @@ export default function Navbar() {
                   PRODUCTS
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/collectionspage" className="nav-items">
                   COLLECTIONS
                 </Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
                 <Link to="/contactuspage" className="nav-items">
                   CONTACT US
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/cartpage" className="nav-items">
                   CART
@@ -65,8 +65,9 @@ export default function Navbar() {
                   to="/login"
                   className="nav-items"
                   onClick={(e) => {
-                    e.preventDefault();                    authDispatch(logout())
-                    navigate('/login')
+                    e.preventDefault();
+                    authDispatch(logout());
+                    navigate("/login");
                   }}
                 >
                   LOGOUT

@@ -17,7 +17,7 @@ function CartPage() {
     setCartData({...cartData,products:newData});
     
   }; */
-  const { cartProducts, loading, status } = useSelector(
+  const { cartProducts, loading, status, cartError } = useSelector(
     (state) => state.userCartItems
   );
 
@@ -115,7 +115,8 @@ function CartPage() {
       </div>
       {/* Using Thunk in Redux */}
       <div className="cart-items-grid">
-        {loading || status == "pending" ? <p>Loading...</p> : ""}
+        {status == "pending" ? <p>Loading...</p> : ""}
+        {cartError && <p>{cartError}</p> }
         {cartProducts.length > 0 &&
           cartProducts.map((obj, ind) => (
             <CartProductsCard cartItem={obj} key={ind} />

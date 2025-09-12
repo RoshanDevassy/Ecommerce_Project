@@ -4,20 +4,40 @@ import { toast } from "react-toastify";
 
 const api_url = import.meta.env.VITE_API_URI;
 
-export const fetchProducts = createAsyncThunk('api/fetchproducts', async () => {
+export const fetchProducts = createAsyncThunk('api/fetchproducts', async (token) => {
     try {
         const response = await fetch(`${api_url}/getproducts`, {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
         })
 
-        if (!response.ok) {
-            throw new Error("Failed")
+        if (response.ok) {
+            return (await response.json());
         }
-        return (await response.json());
+
+        if (response.status === 401) {
+            const errorData = await response.json()
+
+            if (errorData.error === "TokenExpired") {
+                toast.info("Session Timeout Please Login")
+                localStorage.removeItem("clientToken")
+                localStorage.removeItem("clientRole")
+                localStorage.removeItem("clientname")
+
+                window.location.href = "/login"
+            }
+            else if(errorData.error === "noToken"){
+                toast.info("Please login to continue");
+
+                window.location.href = "/login"
+            }
+        }
 
     } catch (err) {
-        console.warn(err)
+
+        throw new Error(err)
     }
 })
 
@@ -41,7 +61,7 @@ export const deleteProduct = createAsyncThunk('api/deleproduct', async (id) => {
             }
         })
 
-        return id;
+        return await response.json();
     } catch (error) {
         throw new Error(error)
     }
@@ -74,21 +94,25 @@ const productSlice = createSlice({
     name: "ecommerce_products",
     initialState: {
         products: [],
-        loading: null,
+        productStatus: null,
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchProducts.pending, (state, action) => {
+                state.productStatus = 'pending';
+                state.error = false;
+            })
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.products = action.payload;
-                state.loading = false;
+                state.productStatus = 'fulfilled';
                 state.error = false;
             })
             .addCase(fetchProducts.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error;
-                toast.success("Product fetch Failed", action.error)
+                state.productStatus = 'rejected';
+                state.error = action.error.message;
+                toast.error(`Product fetch Failed : ${action.error.message} `)
             })
 
             .addCase(addProduct.fulfilled, (state, action) => {
@@ -101,7 +125,7 @@ const productSlice = createSlice({
             })
 
             .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.products = state.products.filter(obj => obj._id != action.payload);
+                state.products = state.products.filter(obj => obj._id != action.payload._id);
 
                 toast.success("Product Deleted Successfully")
             })

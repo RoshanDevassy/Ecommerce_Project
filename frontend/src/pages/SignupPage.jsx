@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../reduxAPIs/AuthSlice";
 import "./signuppage.css";
+import { toast } from "react-toastify";
 
 /* Manual form data getting Method with validation */
 /* export default function SignupPage() {
@@ -169,7 +170,9 @@ export default function SignupPage() {
         SetIsSubmitting(false);
         navigate("/login");
       } catch (error) {
-        alert("Not Signed Up :", error);
+        if (error.message === "User Already Found") {
+          navigate("/login");
+        }
         SetIsSubmitting(false);
         console.info(error);
       }
@@ -207,13 +210,13 @@ export default function SignupPage() {
             )}
           </div>
           <div>
+            <Link to="/login">
+              <button>Go to Signin Page</button>
+            </Link>
             <button type="submit" disabled={isSubmitting}>
               {" "}
               {isSubmitting ? "submitting" : "signup"}
             </button>
-            <Link to="/login">
-              <button>Go to Signin Page</button>
-            </Link>
           </div>
         </div>
       </form>

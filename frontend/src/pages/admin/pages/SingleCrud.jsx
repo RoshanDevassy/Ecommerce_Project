@@ -20,17 +20,20 @@ import {
 import { toast } from "react-toastify";
 
 const SingleCrud = () => {
+
   const { products, loading, error } = useSelector(
     (state) => state.ecomProducts
   );
   const dispatch = useDispatch();
+
+  const {token} = useSelector(state => state.auth)
 
   const [addModal, setAddModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [data, setData] = useState({});
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(token));
   }, []);
 
   const addProductToogle = () => {

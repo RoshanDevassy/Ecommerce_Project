@@ -12,6 +12,8 @@ export default function ProductEditPageAdmin() {
   );
   const dispatch = useDispatch();
 
+  const { token } = useSelector((state) => state.auth);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -35,10 +37,10 @@ export default function ProductEditPageAdmin() {
     //         },
     //         body: JSON.stringify(plainFormData)
     //     })
-    
+
     await dispatch(updateproduct({ plainFormData, id })).unwrap();
 
-    await dispatch(fetchProducts()).unwrap();
+    await dispatch(fetchProducts(token)).unwrap();
 
     router(-1);
   };

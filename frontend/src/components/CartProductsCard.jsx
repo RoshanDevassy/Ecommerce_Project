@@ -3,6 +3,7 @@ import { deleteCartItem, getCartItem } from "../reduxAPIs/UserCartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../reduxAPIs/ProductsSlice";
 import "./cartproductcard.css"
+import { toast } from "react-toastify";
 
 export default function CartProductsCard(props) {
   const [counter, setCounter] = useState(1);
@@ -14,7 +15,7 @@ export default function CartProductsCard(props) {
   useEffect(() => {
     if (counter > props.cartItem.stock) {
       setCounter(props.cartItem.stock);
-      alert("Stock limit reached");
+      toast.error("Stock limit reached");
     } else if (counter <= 0) {
       setCounter(1);
     }

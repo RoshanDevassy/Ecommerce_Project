@@ -1,16 +1,27 @@
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import "./header.css";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 export default function Header() {
   const { role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const handleAdminClick = (e) => {
+/*   const handleAdminClick = (e) => {
     e.preventDefault();
     if (!role) return <Navigate to={"/login"} />;
     else if (role != "admin") return alert("You are not Admin");
     else if (role == "admin") {
       navigate("/admin");
+    }
+  }; */
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    if (localStorage.getItem("clientToken")) {
+      toast.info("Logout to Login");
+    } else {
+      console.info("navigate");
+      navigate("/login");
     }
   };
 
@@ -53,14 +64,20 @@ export default function Header() {
               <Link
                 to="/admin"
                 className="header-links-item"
-                onClick={handleAdminClick}
+                /* onClick={handleAdminClick} */
               >
                 ADMIN
               </Link>
-              <li className="header-links-item">MY ACCOUNT</li>
+              {/* <li className="header-links-item">MY ACCOUNT</li>
               <li className="header-links-item">WISHLIST</li>
-              <li className="header-links-item">CHECKOUT</li>
-              <Link to="/login" className="header-links-item">LOGIN</Link>
+              <li className="header-links-item">CHECKOUT</li> */}
+              <Link
+                to="/login"
+                className="header-links-item"
+                onClick={handleLoginClick}
+              >
+                LOGIN
+              </Link>
             </ul>
           </div>
         </div>

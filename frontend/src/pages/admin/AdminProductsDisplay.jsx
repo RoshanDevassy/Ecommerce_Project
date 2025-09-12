@@ -10,8 +10,9 @@ export default function AdminProductsDisplay() {
     (state) => state.ecomProducts
   );
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
 
-/*   const [formData, setFormData] = useState({
+  /*   const [formData, setFormData] = useState({
     title: "",
     price: "",
     stock: "",
@@ -28,10 +29,10 @@ export default function AdminProductsDisplay() {
   }; */
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(token));
   }, []);
 
-/*   const [isIdClicked, setIsIdClicked] = useState(null); */
+  /*   const [isIdClicked, setIsIdClicked] = useState(null); */
 
   /*   const handleProductEdit = (id) => {
      setIsIdClicked(id); 
@@ -53,15 +54,14 @@ export default function AdminProductsDisplay() {
                 <th>Price</th>
                 <th>Stock</th>
                 <th>url</th>
-                <th></th>
-                <th></th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {products.map((obj) => (
                 <tr key={obj._id} className="product-display-row">
                   <td>
-                    <img src={obj.imgSrc} alt={obj.title} />
+                    <img src={obj.imgSrc} alt={obj.title} disabled />
                   </td>
                   <td>
                     <input
@@ -72,7 +72,9 @@ export default function AdminProductsDisplay() {
                         backgroundColor: "white",
                         border: "none",
                         color: "black",
+                        textAlign: "center",
                       }}
+                      disabled
                       name="title"
                       /* onChange={handleOnChange}
                       disabled={isIdClicked == obj._id ? false : true} */
@@ -89,7 +91,9 @@ export default function AdminProductsDisplay() {
                         backgroundColor: "white",
                         border: "none",
                         color: "black",
+                        textAlign: "center",
                       }}
+                      disabled
                     />
                   </td>
                   <td>
@@ -103,7 +107,9 @@ export default function AdminProductsDisplay() {
                         backgroundColor: "white",
                         border: "none",
                         color: "black",
+                        textAlign: "center",
                       }}
+                      disabled
                     />
                   </td>
                   <td>
@@ -117,10 +123,21 @@ export default function AdminProductsDisplay() {
                         backgroundColor: "white",
                         border: "none",
                         color: "black",
+                        minWidth: "100px",
+                        maxWidth: "300px",
+                        textAlign: "center",
                       }}
+                      disabled
                     ></input>
                   </td>
-                  <td>
+
+                  <td
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      justifyContent: "space-around",
+                    }}
+                  >
                     <Link
                       to={`/admin/updateproduct/${obj._id}`}
                       /* onClick={() => handleProductEdit(obj._id)} */
@@ -130,20 +147,20 @@ export default function AdminProductsDisplay() {
                         color: "white",
                         padding: "6px 8px",
                       }}
+                      disabled
                     >
                       Edit
                     </Link>
-                  </td>
-                  <td>
-                    {" "}
                     <button
+                      type="button"
                       onClick={() => dispatch(deleteProduct(obj._id))}
                       style={{
                         textDecoration: "none",
                         backgroundColor: "grey",
                         color: "white",
-                        padding: "6px 8px",
+                        padding: "4px 8px",
                       }}
+                    
                     >
                       Del
                     </button>{" "}

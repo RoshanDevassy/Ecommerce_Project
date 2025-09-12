@@ -67,7 +67,10 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(signup.fulfilled, (state, action) => {
-                alert("Signed Up Successfully")
+                toast.success("Signed Up Successfully")
+            })
+            .addCase(signup.rejected,(state,action)=>{
+                toast.info(action.error.message)
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.username = action.payload.user.name;
@@ -77,7 +80,7 @@ const authSlice = createSlice({
                 localStorage.setItem("clientname", action.payload.user.name);
                 localStorage.setItem("clientToken", action.payload.token);
                 localStorage.setItem("clientRole", action.payload.user.role);
-                alert("Logged in");
+                toast.success("Logged in");
             })
     }
 })
