@@ -37,7 +37,7 @@ export const login = createAsyncThunk("auth/login", async (obj) => {
         return data
 
     } catch (error) {
-        throw new Error("Not Loggined");
+        throw new Error(error.reponse.data.message);
     }
 })
 
@@ -81,6 +81,9 @@ const authSlice = createSlice({
                 localStorage.setItem("clientToken", action.payload.token);
                 localStorage.setItem("clientRole", action.payload.user.role);
                 toast.success("Logged in");
+            })
+            .addCase(login.rejected,(state,action)=>{
+                toast.info(action.error.message)
             })
     }
 })
