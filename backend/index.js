@@ -9,9 +9,8 @@ const CartMiddleware = require("./middlewares/CartMiddleware");
 const app = express();
 const PORT = process.env.PORT;
 
-
 app.use(cors({
-  origin: [process.env.FRONTEND_URI, 'http://localhost:5173'],
+  origin: [process.env.FRONTEND_URI, 'http://localhost:5173','http://localhost:4173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -53,8 +52,6 @@ app.get('/', (req, res) => {
 })
 
 /* User API */
-
-
 
 app.post('/signup/user', async (req, res) => {
   const user_collection = client.db("ecommercedb").collection("users");
@@ -130,7 +127,6 @@ app.post('/login/user', async (req, res) => {
 
 /* Products api */
 
-
 app.post('/admin/addproduct', async (req, res) => {
 
 
@@ -142,7 +138,7 @@ app.post('/admin/addproduct', async (req, res) => {
   res.status(201).json(find[0])
 });
 
-app.get('/getproducts', async (req, res) => {
+app.get('/getproducts', cartMiddleware, async (req, res) => {
 
 
   const products_collection = client.db("ecommercedb").collection("products");
@@ -172,12 +168,11 @@ app.delete('/admin/deleteproduct/:id', async (req, res) => {
 
   const id = req.params.id;
   const response = await products_collection.deleteOne({ _id: new ObjectId(id) });
-  res.send(response)
+
+  res.send({ _id: id })
 })
 
-
 //Cart API
-
 
 app.post('/addtocart', CartMiddleware, async (req, res) => {
 
@@ -238,20 +233,17 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
     return res.status(404).json({ message: "No cart item found to delete" });
   }
 
-  res.status(200).json({ message: "Item Deleted Successfully" })
+  res.status(200).json({ _id: id })
 })
 
 app.get('/verifytoken', cartMiddleware, async (req, res) => {
-  if(req.user.id){
-    res.send(200).json({message:"Token Verified"})
+  console.info("hi")
+  if (req.user.id) {
+    res.send(200).json({ message: "Token Verified" })
   }
-  
-})
 
+})
 
 /* app.listen(PORT, () => console.info(`Connected Port : ${PORT}`)); */
 
 module.exports = app;
-
-
-
