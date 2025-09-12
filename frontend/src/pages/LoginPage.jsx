@@ -99,7 +99,7 @@ export default function LoginPage() {
         navigate("/homepage");
       } catch (error) {
         setIsLogging(false);
-        console.warn("Login Error :", error.message);
+        console.warn("Login Error :", error);
       }
     } else {
       setIsLogging(false);
