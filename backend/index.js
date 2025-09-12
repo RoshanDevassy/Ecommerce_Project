@@ -1,4 +1,4 @@
-require('dotenv').config()
+/* require('dotenv').config() */
 
 const express = require("express");
 const cors = require("cors");
@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const CartMiddleware = require("./middlewares/CartMiddleware");
 
 const app = express();
-const PORT = process.env.PORT;
+/* const PORT = process.env.PORT; */
 
 app.use(cors({
   origin: [process.env.FRONTEND_URI, 'http://localhost:5173','http://localhost:4173'],
@@ -237,7 +237,6 @@ app.delete('/deletecartitem/:id', CartMiddleware, async (req, res) => {
 })
 
 app.get('/verifytoken', cartMiddleware, async (req, res) => {
-  console.info("hi")
   if (req.user.id) {
     res.send(200).json({ message: "Token Verified" })
   }
