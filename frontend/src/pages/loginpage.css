@@ -6,16 +6,4 @@
     font-size: 22px;
     text-align: center;
   }
-
-  .login-page-layout {
-    display: grid;
-    row-gap: 20px;
-    width: fit-content;
-    justify-self: center;
-
-    .login-item {
-      display: grid;
-      grid-template-columns: 0.5fr 1fr;
-    }
-  }
 }

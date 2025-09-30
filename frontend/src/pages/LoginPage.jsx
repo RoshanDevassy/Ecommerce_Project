@@ -110,9 +110,9 @@ export default function LoginPage() {
     <>
       <form onSubmit={handleFormSubmit} className="login-page-form">
         <h2>Welcome to Login Page</h2>
-        <div className="login-page-layout">
-          <div className="login-item">
-            <label htmlFor="username">Username :</label>
+        <div className="grid grid-rows-3 gap-4 p-4">
+          <div className="grid grid-cols-2">
+            <label htmlFor="username">Username </label>
             <input
               type="text"
               onChange={handleChange}
@@ -122,8 +122,8 @@ export default function LoginPage() {
             />
             {error.username && <p>{error.username}</p>}
           </div>
-          <div className="login-item">
-            <label htmlFor="password">Password :</label>
+          <div className="grid grid-cols-2">
+            <label htmlFor="password">Password </label>
             <input
               type="text"
               onChange={handleChange}

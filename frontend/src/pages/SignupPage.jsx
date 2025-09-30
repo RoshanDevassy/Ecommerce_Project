@@ -185,7 +185,7 @@ export default function SignupPage() {
     <>
       <form onSubmit={handleFormSubmit} className="signup-form-page">
         <h1>Signup</h1>
-        <div className=" grid grid-rows-3 gap-6 p-4 w-fit ">
+        <div className=" grid grid-rows-3 gap-4 p-4 ">
           <div className=" grid grid-cols-2">
             <label htmlFor="username">UserName </label>
             <input
