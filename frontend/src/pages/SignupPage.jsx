@@ -184,24 +184,31 @@ export default function SignupPage() {
   return (
     <>
       <form onSubmit={handleFormSubmit} className="signup-form-page">
-        <div className="signup-layout">
-          <h1>Signup</h1>
-          <div className="signup-item">
-            <label htmlFor="username">UserName :</label>
-            <input type="text" maxLength={25} minLength={3} name="username" />
+        <h1>Signup</h1>
+        <div className=" grid grid-rows-3 gap-6 p-4 w-fit ">
+          <div className=" grid grid-cols-2">
+            <label htmlFor="username">UserName </label>
+            <input
+              type="text"
+              maxLength={25}
+              minLength={3}
+              name="username"
+              className="border-2 border-black rounded-md"
+            />
             {error.username && (
               <p style={{ fontSize: "12px", color: "red" }}>
                 {error.username}!
               </p>
             )}
           </div>
-          <div className="signup-item">
-            <label htmlFor="password">Password :</label>
+          <div className=" grid grid-cols-2">
+            <label htmlFor="password">Password </label>
             <input
               type="password"
               maxLength={15}
               minLength={8}
               name="password"
+              className="border-2 border-black rounded-md"
             />
             {error.password && (
               <p style={{ fontSize: "12px", color: "red" }}>
@@ -209,11 +216,17 @@ export default function SignupPage() {
               </p>
             )}
           </div>
-          <div>
+          <div className="flex flex-wrap gap-4">
             <Link to="/login">
-              <button>Go to Signin Page</button>
+              <button className="border-2 border-black rounded px-2">
+                Go to Login Page
+              </button>
             </Link>
-            <button type="submit" disabled={isSubmitting}>
+            <button
+              type="submit"
+              className="border-2 border-black rounded px-2"
+              disabled={isSubmitting}
+            >
               {" "}
               {isSubmitting ? "submitting" : "signup"}
             </button>

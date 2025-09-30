@@ -1,28 +1,21 @@
-.login-page-form{
-    min-height: 86vh;
+.login-page-form {
+  min-height: 86vh;
 
-    .login-page-layout{
-        display: grid;        
-        row-gap: 20px;
-        width: fit-content;     
-        justify-self: center;
+  h2 {
+    padding: 20px 0;
+    font-size: 22px;
+    text-align: center;
+  }
 
-        h1{
-            padding: 20px 0;
-            font-size: 22px;
-            text-align: center;
-        }
+  .login-page-layout {
+    display: grid;
+    row-gap: 20px;
+    width: fit-content;
+    justify-self: center;
 
-        button{
-            width: fit-content;
-            height: fit-content;
-            padding: 8px 18px;
-            justify-self: center;
-        }
-
-        .login-item{
-            display: grid;
-            grid-template-columns: 0.5fr 1fr;
-        }
+    .login-item {
+      display: grid;
+      grid-template-columns: 0.5fr 1fr;
     }
+  }
 }

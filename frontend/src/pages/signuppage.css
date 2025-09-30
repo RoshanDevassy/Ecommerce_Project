@@ -1,28 +1,9 @@
-.signup-form-page{
-    min-height: 86vh;
+.signup-form-page {
+  min-height: 86vh;
 
-    .signup-layout{
-        display: grid;        
-        row-gap: 20px;
-        width: fit-content;     
-        justify-self: center;
-
-        h1{
-            padding: 20px 0;
-            font-size: 22px;
-            text-align: center;
-        }
-
-        button{
-            width: fit-content;
-            height: fit-content;
-            padding: 8px 12px;
-        }
-
-        .signup-item{
-            display: grid;
-            grid-template-columns: 0.5fr 1fr;
-        }
-
-    }
+  h1 {
+    padding: 20px 0;
+    font-size: 22px;
+    text-align: center;
+  }
 }

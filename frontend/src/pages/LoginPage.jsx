@@ -109,8 +109,8 @@ export default function LoginPage() {
   return (
     <>
       <form onSubmit={handleFormSubmit} className="login-page-form">
+        <h2>Welcome to Login Page</h2>
         <div className="login-page-layout">
-          <h2>Welcome to Login Page</h2>
           <div className="login-item">
             <label htmlFor="username">Username :</label>
             <input
@@ -118,6 +118,7 @@ export default function LoginPage() {
               onChange={handleChange}
               name="username"
               disabled={isLogging}
+              className="border-2 border-black rounded-md"
             />
             {error.username && <p>{error.username}</p>}
           </div>
@@ -128,18 +129,24 @@ export default function LoginPage() {
               onChange={handleChange}
               name="password"
               disabled={isLogging}
+              className="border-2 border-black rounded-md"
             />
             {error.password && <p>{error.password}</p>}
           </div>
-          <div>
+          <div className="flex flex-wrap gap-4">
             <Link to="/">
-              <button>Go to SignUp</button>
+              <button className="border-2 border-black rounded px-2">
+                Go to SignUp
+              </button>
             </Link>
-            <button type="submit" disabled={isLogging}>
+            <button
+              type="submit"
+              disabled={isLogging}
+              className="border-2 border-black rounded px-2"
+            >
               {" "}
               {isLogging ? "Logging in" : "Login"}{" "}
             </button>
-            
           </div>
         </div>
       </form>
